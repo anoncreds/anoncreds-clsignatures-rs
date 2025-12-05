@@ -16,8 +16,8 @@ The second protocol allows the signature owner to prove that he has a signature
 on many messages without revealing the signature and only a (possibly) empty
 subset of the messages.
 
-CL Signatures are the basis of [Hyperledger AnonCreds v1.0] and the implementation in this repository
-is used in the [Hyperledger AnonCreds Rust implementation].
+CL Signatures are the basis of [AnonCreds v1.0] and the implementation in this repository
+is used in the [AnonCreds Rust implementation].
 
 This implementation of CL Signatures was initially in the [Hyperledger Ursa]
 project.
@@ -27,8 +27,8 @@ project.
 [2001]: https://eprint.iacr.org/2001/019.pdf
 [2003]: https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=764e89025d68eda8010732285add5a4296f4e0ae
 [2004]: https://cs.brown.edu/~alysyans/papers/cl04.pdf
-[Hyperledger AnonCreds v1.0]: https://hyperledger.github.io/anoncreds-spec/
-[Hyperledger AnonCreds Rust implementation]: https://github.com/hyperledger/anoncreds-rs
+[AnonCreds v1.0]: https://anoncreds.github.io/anoncreds-spec/
+[AnonCreds Rust implementation]: https://github.com/anoncreds/anoncreds-rs
 [Hyperledger Ursa]: https://github.com/hyperledger/ursa
 
 ## Rust Crate
@@ -39,8 +39,8 @@ To start, all that is needed is to add this to your `Cargo.toml`.
 
 ```toml
 [dependencies]
-anoncreds-clsignatures = "0.1"
+anoncreds-clsignatures = "0.3"
 ```
 
-For an example of using this crate, see the [Hyperledger AnonCreds Rust
+For an example of using this crate, see the [AnonCreds Rust
 implementation] repository.
