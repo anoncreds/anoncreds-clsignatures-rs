@@ -6,7 +6,7 @@ edition = "2021"
 license = "Apache-2.0"
 name = "anoncreds-clsignatures"
 readme = "README.md"
-repository = "https://github.com/hyperledger/anoncreds-clsignatures-rs"
+repository = "https://github.com/anoncreds/anoncreds-clsignatures-rs"
 version = "0.3.3"
 rust-version = "1.65"
 
