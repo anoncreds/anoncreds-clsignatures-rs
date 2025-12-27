@@ -1,74 +1,168 @@
-# Hyperledger Security Policy
+# Hyperledger AnonCreds Security Policy
 
-## Reporting a Security Bug
+## About this document
 
-If you think you have discovered a security issue in any of the Hyperledger
-projects, we'd love to hear from you. We will take all security bugs seriously
-and if confirmed upon investigation we will patch it within a reasonable amount
-of time and release a public security bulletin discussing the impact and credit
-the discoverer.
+This document defines how security vulnerability reporting is handled in the
+Hyperledger AnonCreds project. The approach aligns with the [Hyperledger
+Foundation's Security Vulnerability Reporting
+policy](https://toc.hyperledger.org/governing-documents/security.html). Please
+review that document to understand the basis of the security reporting for
+Hyperledger AnonCreds.
 
-To report a security bug email a description of the flaw and any related
-information (e.g. reproduction steps, version)
-to [security@lists.hyperledger.org](mailto:security@lists.hyperledger.org).
+The Hyperledger Security Vulnerability policy borrows heavily from the
+recommendations of the OpenSSF Vulnerability Disclosure working group. For
+up-to-date information on the latest recommendations related to vulnerability
+disclosures, please visit the [GitHub of that working
+group](https://github.com/ossf/wg-vulnerability-disclosures).
 
-Security Bug Handling Process
+If you are already familiar with the security policies of Hyperledger AnonCreds, and
+ready to report a vulnerability, please jump to [Report
+Intakes](#report-intakes).
 
-1. The person discovering the issue, the reporter, reports the vulnerability
-   privately to
-   [security@lists.hyperledger.org](mailto:security@lists.hyperledger.org).
-2. Messages that do not relate to the reporting or managing of an undisclosed
-   security vulnerability in Hyperledger software are ignored and no further
-   action is required.
-3. The project team sends an e-mail to the original reporter to acknowledge the
-   report.
-4. The project team investigates the report and either rejects it or accepts it.
-5. If the report is rejected, the project team writes to the reporter to explain
-   why.
-6. If the report is accepted, the project team writes to the reporter to let
-   them know it is accepted and that they are working on a fix.
-7. The project team requests a CVE number from security at lists dot
-   hyperledger.org by sending an e-mail with the subject "CVE request for..."
-   and providing a short (one line) description of the vulnerability. Guidance
-   is available to determine if a report requires multiple CVEs or if multiple
-   reports should be merged under a single CVE.
-8. The project team agrees on the fix on their private list.
-9. The project team provides the reporter with a copy of the fix and a draft
-vulnerability announcement for comment. 10 The project team agrees to the fix,
-the announcement, and the release schedule with the reporter. For an example of
-an announcement, see Tomcat's announcement of CVE-2008-2370. The level of detail
-to include in the report is a matter of judgment. Generally, reports should
-contain enough information to enable people to assess the risk associated with
-the vulnerability for their system and no more. Steps to reproduce the
-vulnerability are not normally included.
-11. The project team commits the fix. No reference should be made to the commit
-    being related to a security vulnerability.
-12. The project team creates a release that includes the fix.
-13. The project team announces the release. The release announcement should be
-    sent to the usual mailing lists (typically the project's user list, dev
-    list, announce list, and the Hyperledger announce list).
-14. The project team announces the vulnerability. The vulnerability announcement
-    should be sent after the release announcement to the following destinations:
-  1. The same destinations as the release announcement.
-  2. The vulnerability reporter.
-  3. The project's mailing list.
-  4. [https://cveform.mitre.org/](https://cveform.mitre.org/) using “Notify CVE
-     about a publication”. Submissions should be in the following format:
+## Outline
 
-```
-[CVEID]:CVE-2017-5648
-[PRODUCT]:Apache Tomcat
-[VERSION]:9.0.0.M1 to 9.0.0.M17, 8.5.0 to 8.5.11, 8.0.0.RC1 to 8.0.41, 7.0.0 to 7.0.75
-[PROBLEMTYPE]:Information Disclosure
-[REFERENCES]:https://lists.apache.org/thread.html/d0e00f2e147a9e9b13a6829133092f349b2882bf6860397368a52600@%3Cannounce.tomcat.apache.org%3E
-[DESCRIPTION]:While investigating bug 60718, it was noticed that some calls to application listeners did not use the appropriate facade object. When running an untrusted application under a SecurityManager, it was therefore possible for that untrusted application to retain a reference to the request or response object and thereby access and/or modify information associated with another web application.
-```       
+This document has the following sections:
 
-This is the first point that any information regarding the vulnerability is made
-public.
+- [Hyperledger AnonCreds Security Policy](#hyperledger-anoncreds-security-policy)
+  - [About this document](#about-this-document)
+  - [Outline](#outline)
+  - [What Is a Vulnerability Disclosure Policy?](#what-is-a-vulnerability-disclosure-policy)
+  - [Security Team](#security-team)
+  - [Discussion Forums](#discussion-forums)
+  - [Report Intakes](#report-intakes)
+  - [CNA/CVE Reporting](#cnacve-reporting)
+  - [Embargo List](#embargo-list)
+  - [(GitHub) Security Advisories](#github-security-advisories)
+  - [Private Patch Deployment Infrastructure](#private-patch-deployment-infrastructure)
 
-Information may be shared with domain experts (e.g. colleagues at your employer)
-at the discretion of the project's security team providing that it is made clear
-that the information is not for public disclosure and
-that [security@lists.hyperledger.org](mailto:security@lists.hyperledger.org)
-org must be copied on any communication regarding the vulnerability.
+## What Is a Vulnerability Disclosure Policy?
+
+No piece of software is perfect. All software (at least, all software of a
+certain size and complexity) has bugs. In open source development, members of
+the community or the public find bugs and report them to the project. A
+vulnerability disclosure policy explains how this process functions from the
+perspective of the project.
+
+This vulnerability disclosure policy explains the rules and guidelines for
+Hyperledger AnonCreds. It is intended to act as both a reference for
+outsiders–including both bug reporters and those looking for information on the
+project's security practices–as well as a set of rules that maintainers and
+contributors have agreed to follow.
+
+## Security Team
+
+The current Hyperledger AnonCreds security team is:
+
+| Name             | Email ID                        | Discord ID      | Area/Specialty         |
+| ---------------- | ------------------------------- | --------------- | ---------------------- |
+| Stephen Curran   | swcurran@cloudcompass.ca        | swcurran        | cp ../to               |
+| Hart Montgomery  | hmontgomery@linuxfoundation.org | hartm           | Cryptography, Security |
+| Mike Lodder      | redmike7@gmail.com              | mikelodder      | Cryptography           |
+| Andrew Whitehead | cywolf@gmail.com                | andrewwhitehead | Cryptography, Security |
+
+The security team for Hyperledger AnonCreds must include at least three AnonCreds
+Maintainers that agree to carry out the following duties and responsibilities.
+Members are added and removed from the team via approved Pull Requests to this
+repository. For additional background into the role of the security team, see
+the [People Infrastructure] section of the Hyperledger Security Policy.
+
+[People Infrastructure]: https://toc.hyperledger.org/governing-documents/security.html#people-infrastructure
+
+**Responsibilities:**
+
+1. Acknowledge the receipt of vulnerability reports to the reporter within 2
+   business days.
+
+2. Assess the issue. Engage with the reporter to ask any outstanding questions
+about the report and how to reproduce it. If the report was received by email
+and may be a security vulnerability, open a GitHub Security Advisory on the
+repository to manage the report. If the report is not considered a
+vulnerability, then the reporter should be informed and this process can be
+halted. If the report is a regular bug (but not a security vulnerability), the
+reporter should be informed (if necessary) of the regular process for reporting
+issues.
+
+1. Some issues may require more time and resources to correct. If a particular
+report is complex, discuss an embargo period with the reporter during which
+time the report will not be publicly disclosed. The embargo period should be
+negotiated with the reporter and must not be longer than 90 days.
+
+1. If necessary, create a private patch development infrastructure for the issue
+   by emailing the [security@lists.lfdecentralizedtrust.org].
+
+[security@lists.lfdecentralizedtrust.org]: mailto:security@lists.lfdecentralizedtrust.org
+
+1. Request a CVE for the issue (see the [CNA/CVE Reporting](#cnacve-reporting)
+   section).
+
+2. Decide a date for the public release of the vulnerability report, the date
+   the embargo period ends.
+
+3. If applicable, notify members of the embargo list of the vulnerability,
+upcoming patch and release, as described above.
+
+1. Publish a new (software) release in which the vulnerability is addressed.
+
+2. Publicly disclose the issue within 48 hours after the release via a
+GitHub security advisory (see the [(GitHub) Security
+Advisories](#github-security-advisories) section for details).
+
+## Discussion Forums
+
+Discussions about each reported vulnerability should be carried out in the
+private GitHub security advisory about the vulnerability. If necessary, a private
+channel specific to the issue may be created on the Hyperledger Discord server
+with invited participants added to the discussion.
+
+## Report Intakes
+
+Hyperledger AnonCreds has the following ways to submit security
+vulnerabilities. While the security team members will do their best to
+respond to bugs disclosed in all possible ways, it is encouraged for bug
+finders to report through the following approved channels:
+
+- Email the [security@lists.lfdecentralizedtrust.org]: To report a security issue, please
+send an email with the name of the project/repository, a description of the issue, the
+steps you took to create the issue, affected versions, and if known,
+mitigations. If in triaging the email, the security team determines the issue may be
+a security vulnerability, a [GitHub security vulnerability report] will be
+opened.
+- Open a [GitHub security vulnerability report]: Open a draft security advisory
+on the "Security" tab of this GitHub repository. See [GitHub Security
+Advisories](#github-security-advisories) to learn more about the security
+infrastructure in GitHub.
+
+[GitHub security vulnerability report]: https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing/privately-reporting-a-security-vulnerability
+
+## CNA/CVE Reporting
+
+Hyperledger AnonCreds maintains a list of **Common Vulnerabilities and Exposures
+(CVE)** and uses GitHub as its **CVE numbering authority (CNA)** for issuing
+CVEs.
+
+## Embargo List
+
+Hyperledger AnonCreds does **NOT** currently maintain a private embargo list.
+
+If you wish to be added to the embargo list, please email the [security@lists.lfdecentralizedtrust.org] mailing list,
+including the project name (Hyperledger AnonCreds) and reason for being added
+to the embargo list. Requests will be assessed by the Hyperledger AnonCreds
+security team in conjunction with the appropriate Hyperledger Staff, and a
+decision will be made to accommodate or not the request.
+
+For more information about embargo lists, please see the [Embargo List section
+of the Hyperledger Security
+Policy](https://toc.hyperledger.org/governing-documents/security.html#embargo-list).
+
+## (GitHub) Security Advisories
+
+Hyperledger AnonCreds uses GitHub Security Advisories to manage the public
+disclosure of security vulnerabilities.
+
+## Private Patch Deployment Infrastructure
+
+In creating patches and new releases that address security vulnerabilities,
+Hyperledger AnonCreds **MAY** use the private development features of GitHub for
+security vulnerabilities. GitHub has [extensive
+documentation](https://docs.github.com/en/code-security/security-advisories/repository-security-advisories)
+about these features.
